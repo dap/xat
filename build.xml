@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xmpp-admin-tool" default="help">
+	<description>Polls XMPP servers for statistics on sessions, clients, etc.</description>
+
+	<property name="src.dir"     value="${basedir}${file.separator}src" />
+	<property name="lib.dir"     value="${basedir}${file.separator}lib" />
+	<property name="bin.dir"     value="${basedir}${file.separator}bin" />
+	<property name="classes.dir" value="${basedir}${file.separator}classes" />
+	<property name="target.jar"  value="xat.jar" />
+
+	<fileset id="compile.dependencies"
+		dir="${lib.dir}" includes="*.jar" />
+
+	<fileset id="classes.compiled"
+		dir="${classes.dir}" includes="**/*.class"/>
+
+	<target name="help" description="Display info on usage">
+		<exec executable="ant">
+			<arg value="-projecthelp" />
+		</exec>
+	</target>
+
+	<target name="rebuild" description="Clean and Compile">
+		<antcall target="clean-java" />
+		<antcall target="compile-java" />
+		<antcall target="build-jar" />
+	</target>
+
+	<target name="clean" description="Remove everything created during compilation">
+		<antcall target="clean-java" />
+	</target>
+
+	<target name="clean-java" description="Remove files generated during Java compilation">
+		<delete>
+			<fileset dir="${lib.dir}" includes="${target.jar}" />
+		</delete>
+		<delete dir="${classes.dir}" />
+	</target>
+
+	<target name="compile-java" description="Compile all source to Java classes">
+		<mkdir dir="${classes.dir}"/>
+		<javac
+			srcdir="${src.dir}"
+			destdir="${classes.dir}">
+	        <classpath>
+	            <fileset refid="compile.dependencies"/>
+	        </classpath>
+		</javac>
+	</target>
+
+	<target name="build-jar" description="Create a jar containing the StatsPoller class(es)">
+		<jar destfile="${lib.dir}${file.separator}${target.jar}">
+			<fileset refid="classes.compiled"/>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+			  </manifest>
+		</jar>
+	</target>
+
+	<!--
+		How the truststore's were created:
+		$ keytool -importcert -trustcacerts -file ~/Desktop/Thawte/Thawte\ Server\ Roots/ThawtePremiumServerCA_b64.txt -keystore truststore.jks -alias ThawtePremiumServerCA
+	-->
+</project>

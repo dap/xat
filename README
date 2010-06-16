@@ -1,0 +1,55 @@
+XMPP Admin Tool - a tool to gather various statistics from XMPP servers
+
+usage: xat
+ -A,--display-num-active-users         Display number of active users
+ -c,--command-jid <arg>                Command JID (usually realm portion
+                                       of user JID when requesting server info
+ -C,--display-commands                 Display commands available on
+                                       server
+ -d,--debug                            Show debugging messages
+ -H,--hostname <arg>                   Hostname of server
+ -h,--help                             Display this message
+ -J,--display-active-users             Display jids of active users
+ -K,--display-clients                  Display clients in use
+ -o,--port <arg>                       Port
+ -O,--display-num-online-users         Display number of online users
+ -P,--truststore-path <arg>            Path to truststore containing CA
+                                       cert(s)
+ -p,--password <arg>                   Password; supply '-' to prompt for
+                                       password
+ -r,--resource <arg>                   Resource
+ -S,--display-num-connected-sessions   Display number of connected
+                                       sessions
+ -T,--timeout <arg>                    Seconds to wait for response from
+                                       client [default 10]
+ -u,--username <arg>                   Username
+ -v,--verbose                          Show verbose messages
+ -Y,--truststore-type <arg>            Truststore type (GKR, jks, etc.)
+ -Z,--display-server-stats             Display server statistics
+
+INVOCATION EXAMPLES:
+
+# Interrogate connected users to determine client in use
+$ xat -c example.com -u youradminusername -K
+
+# Display active users
+$ xat -c example.com -u youradminusername -J
+
+# Display commands available on the server;
+# this tool likely doesn't currently support them all
+$ xat -c example.com -u youradminusername -C
+
+DEPENDENCIES:
+ * Java 6
+ * libgssapi_krb5.so (Ubuntu supplies this in libkrb5-dev)
+
+BUILDING:
+$ ant compile
+or
+$ ant rebuild
+
+GENERAL INFORMATION:
+
+This tool uses the native Kerberos support available in Java 6, hence the
+dependency on libgssapi_krb5.so on Linux.
+
